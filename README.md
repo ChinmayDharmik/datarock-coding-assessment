@@ -1,89 +1,101 @@
 # DataRock Checkout System
 
-## Overview
+### Overview
 
-This project is a solution for the DataRock test, where we were tasked with building a checkout system for a new computer store. The system allows for flexible pricing rules that can change as needed. The checkout system can scan items in any order, apply discounts, and calculate the total.
+This project implements a checkout system for **Datarock Computer Store**, which includes a flexible pricing system to accommodate opening day specials and any future promotional rules. The checkout system scans items and calculates the total price while applying special discounts and deals.
 
-The following products are in the store's catalogue:
+The system has been developed using **Python**, with unit tests included for key scenarios.
 
-| SKU     | Name        | Price    |
-| ------- | ----------- | --------:|
-| ipd     | Super iPad  | $549.99  |
-| mbp     | MacBook Pro | $1399.99 |
-| atv     | Apple TV    | $109.50  |
-| vga     | VGA adapter | $30.00   |
+### Products in the Catalogue
 
-### Opening Day Specials
-1. **3-for-2 deal on Apple TVs**: Buy 3 Apple TVs and only pay for 2.
-2. **Bulk discount on Super iPads**: If more than 4 iPads are purchased, the price drops from $549.99 to $499.99 each.
-3. **Free VGA adapter with every MacBook Pro**: Every MacBook Pro purchase comes with a free VGA adapter.
+The following products are available in the store's catalogue:
 
-The checkout system allows flexible pricing rules that can be modified for future promotions.
+| SKU  | Name        | Price   |
+|------|-------------|---------|
+| ipd  | Super iPad  | $549.99 |
+| mbp  | MacBook Pro | $1399.99|
+| atv  | Apple TV    | $109.50 |
+| vga  | VGA Adapter | $30.00  |
 
-## Requirements
+### Opening Day Special Pricing Rules
 
-### Languages
-- **Python** was used for this implementation.
+1. **Apple TV Offer**: Buy 3 Apple TVs for the price of 2.
+2. **Super iPad Bulk Discount**: If more than 4 Super iPads are purchased, the price drops to $499.99 per unit.
+3. **MacBook Pro Offer**: Every MacBook Pro purchase includes a free VGA adapter.
 
-### Key Features
-- **Flexible Pricing Rules**: The pricing rules can be easily modified or extended as new promotions are introduced.
-- **Scans Items in Any Order**: The checkout system is able to scan items in any order, and pricing rules are applied when the total is calculated.
-- **Exception Handling for Invalid SKUs**: The system will raise a `ValueError` if an invalid SKU is scanned.
+### Installation and Setup
 
-## Setup and Usage
+To set up and run this checkout system, follow the steps below:
 
-### 1. Clone the Repository
+1. **Clone the Repository**:
+   ```bash
+   git clone https://github.com/ChinmayDharmik/datarock-coding-assessment.git
+   cd datarock-coding-assessment
+   ```
+
+2. **Install Python (if not already installed)**:
+   Ensure that you have Python 3.x installed on your machine.
+
+3. **Run the Tests**:
+   Run the provided unit tests to ensure everything is set up correctly.
+   ```bash
+   python -m unittest test.py
+   ```
+
+4. **Running the Script**:
+   You can run custom checkout scenarios by modifying the scenarios in the `run_scenario()` function in the main Python script or adding new ones to the unit tests.
+
+### Code Structure
+
+- `Product`: Class representing a single product, holding its SKU, name, and price.
+- `Inventory`: Class managing the available products in the inventory.
+- `PricingRule`: Abstract class representing the interface for various pricing rules.
+- `AppleTVRule`: Pricing rule for applying the "Buy 3 for the price of 2" Apple TV deal.
+- `SuperIPadRule`: Pricing rule for applying bulk discounts for Super iPads.
+- `MacBookProRule`: Pricing rule for bundling free VGA adapters with MacBook Pro purchases.
+- `Checkout`: Main class responsible for scanning items, calculating the total, and applying the pricing rules.
+
+### Example Scenarios
+
+Here are some example scenarios and the expected results:
+
+1. **Scenario 1**: Three Apple TVs and a VGA Adapter.
+   ```bash
+   SKUs Scanned: atv, atv, atv, vga
+   Total Expected: $249.00
+   ```
+
+2. **Scenario 2**: Two Apple TVs and five Super iPads.
+   ```bash
+   SKUs Scanned: atv, ipd, ipd, atv, ipd, ipd, ipd
+   Total Expected: $2718.95
+   ```
+
+3. **Scenario 3**: One MacBook Pro, one VGA Adapter, and one Super iPad.
+   ```bash
+   SKUs Scanned: mbp, vga, ipd
+   Total Expected: $1949.98
+   ```
+
+### Running Tests
+
+Unit tests are provided to verify the accuracy of the checkout system. To run the tests:
+
 ```bash
-git clone <repository-url>
-cd DataRock-checkout
+python -m unittest test.py
 ```
 
-### 2. Run the Code
+These tests cover various scenarios to ensure that the pricing rules are applied correctly and that the checkout system behaves as expected.
 
-You can run the checkout scenarios directly by executing the Python script, which includes predefined test scenarios.
+### Pricing Flexibility
 
-```bash
-python main.py
-```
+This checkout system is designed to be flexible. You can easily add or modify pricing rules by creating new classes that extend the `PricingRule` interface, ensuring that the system can adapt to future changes in pricing and promotions with minimal effort.
 
-### 3. Unit Tests
+### Future Improvements
 
-Unit tests have been included to verify the correct behavior of the checkout system. The tests cover multiple scenarios as outlined in the problem description.
+- **Additional Pricing Rules**: Support for more complex promotions (e.g., percentage discounts, combo offers).
+- **Database Integration**: Instead of using an in-memory inventory, integrate a database to handle larger inventories.
+- **Command Line Interface**: Build a simple command-line interface for easier interaction with the checkout system.
 
-To run the unit tests, execute the following command:
-```bash
-python -m unittest main.py
-```
 
-## Example Scenarios
-
-- **Scenario 1**: SKUs Scanned: `atv`, `atv`, `atv`, `vga`
-  - Total expected: $249.00
-- **Scenario 2**: SKUs Scanned: `atv`, `ipd`, `ipd`, `atv`, `ipd`, `ipd`, `ipd`
-  - Total expected: $2718.95
-- **Scenario 3**: SKUs Scanned: `mbp`, `vga`, `ipd`
-  - Total expected: $1949.98
-
-## Code Structure
-
-### Key Classes
-
-1. **`Product`**: Represents an individual product in the store with SKU, name, and price.
-2. **`Inventory`**: Manages the list of available products in the store's catalogue.
-3. **`PricingRule`**: Base class for implementing various pricing rules. Subclasses include:
-   - **`AppleTVRule`**: Implements the 3-for-2 deal for Apple TVs.
-   - **`SuperIPadRule`**: Implements bulk discount for Super iPads.
-   - **`MacBookProRule`**: Provides a free VGA adapter with each MacBook Pro.
-4. **`Checkout`**: Handles scanning items and applying pricing rules to calculate the total.
-
-### Key Methods
-
-- **`scan(sku: str)`**: Adds the product identified by the SKU to the checkout.
-- **`total()`**: Applies all relevant pricing rules and calculates the final total.
-
-### Tests
-
-The system includes unit tests for the following scenarios:
-- Scenario 1: Multiple Apple TVs and a VGA adapter.
-- Scenario 2: Multiple iPads, Apple TVs, and bulk discount rules.
-- Scenario 3: Combination of MacBook Pro, iPad, and VGA adapter.
+Thank you for reviewing this submission for the **DataRock Checkout System** test.

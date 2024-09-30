@@ -88,10 +88,11 @@ def run_scenario(skus):
     checkout = Checkout(pricing_rules, warehouse)
     for sku in skus:
         checkout.scan(sku)
+    print(f"SKUs Scanned: {skus}")
     return checkout.total()
 
 
 # Uncomment the following lines to run test scenarios
-print(f"Total for scenario 1: ${run_scenario(['atv', 'atv', 'atv', 'vga'])}")
-print(f"Total for scenario 2: ${run_scenario(['atv', 'ipd', 'ipd', 'atv', 'ipd', 'ipd', 'ipd'])}")
-print(f"Total for scenario 3: ${run_scenario(['mbp', 'vga', 'ipd'])}")
+print(f"Total for scenario 1: ${run_scenario(['atv', 'atv', 'atv', 'vga'])}\n")
+print(f"Total for scenario 2: ${run_scenario(['atv', 'ipd', 'ipd', 'atv', 'ipd', 'ipd', 'ipd'])}\n")
+print(f"Total for scenario 3: ${run_scenario(['mbp', 'vga', 'ipd'])}\n")
