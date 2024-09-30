@@ -1,7 +1,13 @@
 from typing import Dict, List
 
-# Product class representing individual items in inventory
 class Product:
+    """
+        Represents a product in the inventory.
+        Attributes:
+            sku (str): The stock-keeping unit.
+            name (str): The name of the product.
+            price (float): The price of the product.
+    """
     def __init__(self, sku: str, name: str, price: float):
         self.sku = sku
         self.name = name
@@ -17,8 +23,12 @@ class Product:
             "price": self.price
         }    
 
-# Inventory class to manage the list of available products
 class Inventory:
+    """    
+    Manages the product inventory.
+        Attributes:
+            inventory (dict): Maps product SKU to the Product instance.
+    """
     def __init__(self) -> None:
         self.inventory = dict()
 
@@ -28,34 +38,48 @@ class Inventory:
     def get_inventory(self):
         return self.inventory
 
-# Abstract PricingRule class that all pricing rules inherit from
 class PricingRule:
+    """
+    Base class for pricing rules.
+    """
     def apply(self, items: List[Product]) -> float:
         pass
 
-# Apple TV pricing rule (3 for the price of 2)
 class AppleTVRule(PricingRule):
+    """
+    Apple TV discount rule: Buy 3, pay for 2.
+    """
     def apply(self, items: List[Product]) -> float:
         atv_count = sum(1 for item in items if item.sku == 'atv')
         return -((atv_count // 3) * 109.50)  # Price of one Apple TV
 
-# Super iPad bulk discount pricing rule
 class SuperIPadRule(PricingRule):
+    """
+    Super iPad bulk discount rule: Buy more than 4, price drops to $499.99.
+    """
     def apply(self, items: List[Product]) -> float:
         ipad_count = sum(1 for item in items if item.sku == 'ipd')
         if ipad_count > 4:
             return -(ipad_count * (549.99 - 499.99))  # Discount of $50 per iPad
         return 0
 
-# MacBook Pro pricing rule (free VGA adapter with every MacBook Pro)
 class MacBookProRule(PricingRule):
+    """
+    MacBook Pro bundle: Free VGA adapter with each MacBook Pro.
+    """
     def apply(self, items: List[Product]) -> float:
         mbp_count = sum(1 for item in items if item.sku == 'mbp')
         vga_price = 30.00
         return -(mbp_count * vga_price)  # Free VGA adapter with each MacBook Pro
 
-# Checkout class to handle scanning and calculating total price
 class Checkout:
+    """
+    The checkout system that processes item scans and applies pricing rules.
+    Attributes:
+        pricing_rules (List[PricingRule]): The set of rules to apply at checkout.
+        items (List[Product]): The scanned items for the current transaction.
+        products (dict): The inventory of available products.
+    """
     def __init__(self, pricing_rules: List[PricingRule], products: Inventory):
         self.pricing_rules = pricing_rules
         self.items: List[Product] = []
